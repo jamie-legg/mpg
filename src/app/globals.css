@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #111113;
+  --foreground: #e8e8e8;
+  --border: #3a3a3a;
+  --border-hover: #5a5a5a;
+  --muted: #888888;
 }
 
 @theme inline {
@@ -12,15 +15,121 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Geist Mono", "Consolas", monospace;
+}
+
+/* Subtle grid background pattern - RCL style */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Custom color picker - minimal style */
+.color-picker {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 48px;
+  height: 36px;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  background: transparent;
+  padding: 0;
+}
+
+.color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-picker::-webkit-color-swatch {
+  border: 1px solid var(--border);
+}
+
+.color-picker::-moz-color-swatch {
+  border: 1px solid var(--border);
+}
+
+.color-picker:hover::-webkit-color-swatch {
+  border-color: var(--border-hover);
+}
+
+/* Custom slider - minimal RCL style */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--foreground);
+  cursor: pointer;
+  border: none;
+  transition: transform 0.1s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--foreground);
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+}
+
+.slider::-moz-range-track {
+  height: 2px;
+  background: var(--border);
+}
+
+.slider:focus {
+  outline: none;
+}
+
+/* Smooth transitions */
+button, a, input, label {
+  transition: all 0.15s ease;
+}
+
+/* Custom scrollbar - minimal */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+/* Animation for loading spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }

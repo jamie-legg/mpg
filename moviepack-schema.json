@@ -1,0 +1,65 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Armagetron Advanced Moviepack Configuration Schema",
+    "description": "Schema for moviepack configuration files",
+    "type": "object",
+    "properties": {
+      "MOVIEPACK": {
+        "type": "boolean",
+        "description": "Enable or disable moviepack usage",
+        "default": true
+      },
+      "MOVIEPACK_FLOOR_RED": {
+        "type": "number",
+        "description": "Red component of the floor color (0.0 to 1.0)",
+        "minimum": 0.0,
+        "maximum": 1.0,
+        "default": 0.5
+      },
+      "MOVIEPACK_FLOOR_GREEN": {
+        "type": "number",
+        "description": "Green component of the floor color (0.0 to 1.0)",
+        "minimum": 0.0,
+        "maximum": 1.0,
+        "default": 0.5
+      },
+      "MOVIEPACK_FLOOR_BLUE": {
+        "type": "number",
+        "description": "Blue component of the floor color (0.0 to 1.0)",
+        "minimum": 0.0,
+        "maximum": 1.0,
+        "default": 0.5
+      },
+      "GRID_SIZE_MOVIEPACK": {
+        "type": "number",
+        "description": "Distance between grid lines on the floor (game units)",
+        "minimum": 0.1,
+        "maximum": 10.0,
+        "default": 2.0
+      },
+      "MOVIEPACK_WALL_STRETCH": {
+        "type": "number",
+        "description": "Distance between vertical lines on cycle walls (game units)",
+        "minimum": 0.1,
+        "maximum": 20.0,
+        "default": 4.0
+      },
+      "MOVIEPACK_RIM_WALL_STRETCH_X": {
+        "type": "number",
+        "description": "Horizontal extension of rim wall texture (game units)",
+        "minimum": 1.0,
+        "maximum": 500.0,
+        "default": 50.0
+      },
+      "MOVIEPACK_RIM_WALL_STRETCH_Y": {
+        "type": "number",
+        "description": "Vertical extension of rim wall texture (game units)",
+        "minimum": 1.0,
+        "maximum": 500.0,
+        "default": 50.0
+      }
+    },
+    "required": []
+  }
+  
+  

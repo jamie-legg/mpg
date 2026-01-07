@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Moviepack Generator
+
+A web-based tool for creating custom visual packs (moviepacks) for [Armagetron Advanced](https://www.armagetronad.org/).
+
+## Features
+
+- **Configure Settings**: Adjust floor color tint, grid size, wall stretch, and rim wall stretch values
+- **Upload Textures**: Add required and optional texture files (PNG format)
+- **Export**: Download a ready-to-use `moviepack.zip` containing `settings.cfg` and all textures
+
+## Required Textures
+
+| Texture | Description |
+|---------|-------------|
+| `floor.png` | Main floor texture |
+| `floor_a.png` | Alternate floor texture A (checkerboard) |
+| `floor_b.png` | Alternate floor texture B (checkerboard) |
+| `dir_wall.png` | Directional wall texture (cycle walls) |
+| `rim_wall_a.png` | Rim wall variant A |
+| `rim_wall_b.png` | Rim wall variant B |
+| `rim_wall_c.png` | Rim wall variant C |
+| `rim_wall_d.png` | Rim wall variant D |
+
+## Optional Textures
+
+- `sky.png` - Lower sky texture
+- `upper_sky.png` - Upper sky texture
+- `bike.png` - Cycle texture
+- `cycle_body.png` - Cycle body texture
+- `cycle_wheel.png` - Cycle wheel texture
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to use the generator.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Extract the generated `moviepack.zip` contents into your Armagetron Advanced data directory:
 
-## Learn More
+```
+data/
+└── moviepack/
+    ├── settings.cfg
+    ├── floor.png
+    ├── floor_a.png
+    ├── floor_b.png
+    ├── dir_wall.png
+    ├── rim_wall_a.png
+    ├── rim_wall_b.png
+    ├── rim_wall_c.png
+    └── rim_wall_d.png
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Built With
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [JSZip](https://stuk.github.io/jszip/)
