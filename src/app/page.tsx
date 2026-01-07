@@ -18,6 +18,7 @@ export default function Home() {
   const [config, setConfig] = useState<MoviepackConfig>({ ...DEFAULT_CONFIG });
   const [textures, setTextures] = useState<TextureFiles>({});
   const [isExporting, setIsExporting] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   // Check if all required textures are uploaded
   const allRequiredUploaded = REQUIRED_TEXTURES.every(
@@ -124,24 +125,88 @@ export default function Home() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-8 py-16">
         {/* Header */}
-        <header className="mb-16 text-center">
+        <header className="mb-12 text-center">
           <h1 className="text-4xl tracking-[0.3em] font-light mb-4 uppercase">
             Moviepack Generator
           </h1>
-          <p className="text-[#888] tracking-wide text-sm">
-            create custom visual packs for armagetron advanced
+          <p className="text-[#888] tracking-wide text-sm max-w-lg mx-auto leading-relaxed">
+            Make your own visual pack for Armagetron Advanced. Tweak the settings, 
+            drop in your textures, and download a ready-to-install zip.
           </p>
+          <div className="mt-4 flex justify-center gap-6 text-xs">
+            <a
+              href="https://wiki.armagetronad.org/index.php/Moviepacks_list"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#666] hover:text-[#e8e8e8] transition-colors"
+            >
+              browse existing packs →
+            </a>
+            <button
+              onClick={() => setShowHelp(!showHelp)}
+              className="text-[#666] hover:text-[#e8e8e8] transition-colors"
+            >
+              {showHelp ? "hide help ↑" : "how to install →"}
+            </button>
+          </div>
         </header>
+
+        {/* Help Section */}
+        {showHelp && (
+          <section className="mb-12 p-6 border border-[#2a2a2a] text-sm leading-relaxed">
+            <h2 className="text-xs tracking-[0.2em] uppercase mb-4 text-[#888]">
+              Installing Your Moviepack
+            </h2>
+            <ol className="space-y-3 text-[#aaa]">
+              <li>
+                <span className="text-[#666] mr-2">1.</span>
+                Download the zip after uploading your textures
+              </li>
+              <li>
+                <span className="text-[#666] mr-2">2.</span>
+                Find your Armagetron data folder:
+                <ul className="mt-2 ml-5 space-y-1 text-[#888] text-xs">
+                  <li>Windows: <code className="bg-[#1a1a1a] px-1">Documents\Armagetron Advanced\</code></li>
+                  <li>Linux: <code className="bg-[#1a1a1a] px-1">~/.armagetronad/</code></li>
+                  <li>macOS: <code className="bg-[#1a1a1a] px-1">~/Library/Application Support/Armagetron Advanced/</code></li>
+                </ul>
+              </li>
+              <li>
+                <span className="text-[#666] mr-2">3.</span>
+                Extract the zip so you have a <code className="bg-[#1a1a1a] px-1">moviepack</code> folder with your textures inside
+              </li>
+              <li>
+                <span className="text-[#666] mr-2">4.</span>
+                Launch the game — it should pick up the moviepack automatically
+              </li>
+            </ol>
+            <p className="mt-4 text-[#666] text-xs">
+              Need more help? Check the{" "}
+              <a
+                href="https://wiki.armagetronad.org/index.php/Customizing_the_game"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#888] hover:text-[#e8e8e8] transition-colors"
+              >
+                customization guide
+              </a>{" "}
+              on the wiki.
+            </p>
+          </section>
+        )}
 
         {/* Main Content */}
         <div className="space-y-12">
           {/* Settings Section */}
           <section>
             <SectionTitle>Settings</SectionTitle>
+            <p className="text-[#666] text-xs mb-6 -mt-4">
+              These control how your textures appear in-game. The defaults work fine if you&apos;re not sure.
+            </p>
             
             <div className="grid md:grid-cols-2 gap-8">
               {/* Floor Settings */}
-              <SettingsCard title="FLOOR">
+              <SettingsCard title="FLOOR" hint="The arena surface">
                 <div className="space-y-6">
                   <div>
                     <label className="block text-xs tracking-wider text-[#888] mb-3 uppercase">
@@ -154,16 +219,15 @@ export default function Home() {
                         onChange={(e) => handleColorChange(e.target.value)}
                         className="color-picker"
                       />
-                      <span className="text-xs text-[#888] font-mono">
-                        {(config.MOVIEPACK_FLOOR_RED ?? 0.5).toFixed(2)},{" "}
-                        {(config.MOVIEPACK_FLOOR_GREEN ?? 0.5).toFixed(2)},{" "}
-                        {(config.MOVIEPACK_FLOOR_BLUE ?? 0.5).toFixed(2)}
+                      <span className="text-xs text-[#666] font-mono">
+                        multiplies with your floor texture
                       </span>
                     </div>
                   </div>
 
                   <SliderControl
                     label="Grid Size"
+                    hint="spacing between grid lines"
                     value={config.GRID_SIZE_MOVIEPACK ?? 2.0}
                     range={CONFIG_RANGES.GRID_SIZE_MOVIEPACK}
                     onChange={(v) => handleSliderChange("GRID_SIZE_MOVIEPACK", v)}
@@ -172,10 +236,11 @@ export default function Home() {
               </SettingsCard>
 
               {/* Wall Settings */}
-              <SettingsCard title="WALLS">
+              <SettingsCard title="WALLS" hint="Cycle trails and arena boundary">
                 <div className="space-y-6">
                   <SliderControl
                     label="Wall Stretch"
+                    hint="texture repeat on cycle walls"
                     value={config.MOVIEPACK_WALL_STRETCH ?? 4.0}
                     range={CONFIG_RANGES.MOVIEPACK_WALL_STRETCH}
                     onChange={(v) => handleSliderChange("MOVIEPACK_WALL_STRETCH", v)}
@@ -183,6 +248,7 @@ export default function Home() {
 
                   <SliderControl
                     label="Rim X Stretch"
+                    hint="horizontal repeat on arena edge"
                     value={config.MOVIEPACK_RIM_WALL_STRETCH_X ?? 50.0}
                     range={CONFIG_RANGES.MOVIEPACK_RIM_WALL_STRETCH_X}
                     onChange={(v) =>
@@ -192,6 +258,7 @@ export default function Home() {
 
                   <SliderControl
                     label="Rim Y Stretch"
+                    hint="vertical repeat on arena edge"
                     value={config.MOVIEPACK_RIM_WALL_STRETCH_Y ?? 50.0}
                     range={CONFIG_RANGES.MOVIEPACK_RIM_WALL_STRETCH_Y}
                     onChange={(v) =>
@@ -211,11 +278,15 @@ export default function Home() {
                 {uploadedCount}/{REQUIRED_TEXTURES.length} required
               </span>
             </SectionTitle>
+            <p className="text-[#666] text-xs mb-6 -mt-4">
+              All textures should be PNG files. The floor uses a checkerboard pattern, and the rim wall 
+              cycles through all four textures around the arena.
+            </p>
 
             {/* Required Textures */}
             <div className="mb-8">
               <h3 className="text-xs tracking-wider text-[#888] mb-4 uppercase">
-                Required
+                Required — you need all of these
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {REQUIRED_TEXTURES.map((tex) => (
@@ -232,7 +303,7 @@ export default function Home() {
             {/* Optional Textures */}
             <div>
               <h3 className="text-xs tracking-wider text-[#888] mb-4 uppercase">
-                Optional
+                Optional — falls back to defaults if missing
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {OPTIONAL_TEXTURES.map((tex) => (
@@ -261,16 +332,16 @@ export default function Home() {
             </button>
             {!allRequiredUploaded && (
               <p className="mt-4 text-center text-xs text-[#666]">
-                upload all required textures to enable export
+                upload all 8 required textures to enable download
               </p>
             )}
           </section>
         </div>
 
         {/* Footer */}
-        <footer className="mt-20 pt-8 border-t border-[#222] text-center">
-          <p className="text-xs text-[#666] tracking-wide">
-            moviepack generator for{" "}
+        <footer className="mt-20 pt-8 border-t border-[#222] text-center space-y-3">
+          <p className="text-xs text-[#666]">
+            for{" "}
             <a
               href="https://www.armagetronad.org/"
               target="_blank"
@@ -278,6 +349,17 @@ export default function Home() {
               className="text-[#888] hover:text-[#e8e8e8] transition-colors"
             >
               armagetron advanced
+            </a>
+          </p>
+          <p className="text-xs text-[#555]">
+            looking for inspiration?{" "}
+            <a
+              href="https://wiki.armagetronad.org/index.php/Moviepacks_list"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#666] hover:text-[#e8e8e8] transition-colors"
+            >
+              check out other moviepacks
             </a>
           </p>
         </footer>
@@ -298,14 +380,19 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 // Settings Card Component
 function SettingsCard({
   title,
+  hint,
   children,
 }: {
   title: string;
+  hint?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="p-6 border border-[#2a2a2a]">
-      <h3 className="text-xs tracking-[0.15em] mb-6 text-[#888]">{title}</h3>
+      <div className="mb-6">
+        <h3 className="text-xs tracking-[0.15em] text-[#888]">{title}</h3>
+        {hint && <p className="text-[10px] text-[#555] mt-1">{hint}</p>}
+      </div>
       {children}
     </div>
   );
@@ -314,23 +401,26 @@ function SettingsCard({
 // Slider Control Component
 function SliderControl({
   label,
+  hint,
   value,
   range,
   onChange,
 }: {
   label: string;
+  hint?: string;
   value: number;
   range: { min: number; max: number; step?: number; description: string };
   onChange: (value: number) => void;
 }) {
   return (
     <div>
-      <div className="flex justify-between items-center mb-3">
+      <div className="flex justify-between items-center mb-1">
         <label className="text-xs tracking-wider text-[#888] uppercase">
           {label}
         </label>
         <span className="text-xs text-[#e8e8e8] font-mono">{value.toFixed(1)}</span>
       </div>
+      {hint && <p className="text-[10px] text-[#555] mb-3">{hint}</p>}
       <input
         type="range"
         min={range.min}
@@ -387,6 +477,7 @@ function TextureUpload({
               ? "border-[#e8e8e8]"
               : "border-[#2a2a2a] hover:border-[#444]"
           }`}
+        title={texture.description}
       >
         <input
           type="file"
